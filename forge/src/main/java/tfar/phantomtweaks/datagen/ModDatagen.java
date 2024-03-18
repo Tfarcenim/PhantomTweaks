@@ -48,7 +48,7 @@ public class ModDatagen {
             final HolderGetter<Biome> biomeHolderGetter = context.lookup(Registries.BIOME);
             final BiomeModifier addSpawn = ForgeBiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(
                     biomeHolderGetter.getOrThrow(BiomeTags.IS_END),
-                    new MobSpawnSettings.SpawnerData(EntityType.PHANTOM, 1, 1, 4));
+                    new MobSpawnSettings.SpawnerData(EntityType.PHANTOM, 5, 1, 4));
             context.register(createModifierKey("add_phantom_spawn"), addSpawn);
         });
         RegistryAccess.Frozen regAccess = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);

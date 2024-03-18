@@ -1,6 +1,9 @@
 package tfar.phantomtweaks;
 
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -16,12 +19,14 @@ public class PhantomTweaksForge {
         // project.
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(ModDatagen::gather);
-
+        bus.addListener(this::spawnPlacement);
         // Use Forge to bootstrap the Common mod.
         PhantomTweaks.init();
-        
     }
 
-
+    private void spawnPlacement(SpawnPlacementRegisterEvent e) {
+        e.register(EntityType.PHANTOM, SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PhantomTweaks::requireDragonDefeat,
+                SpawnPlacementRegisterEvent.Operation.REPLACE);
+    }
 
 }

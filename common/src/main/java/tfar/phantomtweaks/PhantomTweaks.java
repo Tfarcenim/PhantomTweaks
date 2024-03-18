@@ -1,10 +1,17 @@
 package tfar.phantomtweaks;
 
-import tfar.phantomtweaks.platform.Services;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.item.Items;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.monster.Phantom;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.dimension.end.EndDragonFight;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tfar.phantomtweaks.mixin.EndDragonFightMixin;
 
 // This class is part of the common project meaning it is shared between all supported loaders. Code written here can only
 // import and access the vanilla codebase, libraries used by vanilla, and optionally third party libraries that provide
@@ -28,4 +35,14 @@ public class PhantomTweaks {
         // the platform specific approach.
 
     }
+
+    public static boolean requireDragonDefeat(EntityType<Phantom> pType, ServerLevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
+        boolean b = Mob.checkMobSpawnRules(pType,pLevel,pSpawnType,pPos,pRandom);
+        if (pLevel instanceof ServerLevel serverLevel) {
+            EndDragonFight endDragonFight = serverLevel.getDragonFight();
+            b &= endDragonFight != null && ((EndDragonFightMixin) endDragonFight).getDragonKilled();
+        }
+        return b;
+    }
+
 }
