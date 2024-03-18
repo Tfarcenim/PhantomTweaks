@@ -8,7 +8,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -39,7 +38,7 @@ public abstract class PhantomMixin extends Mob implements NeutralMob {
     @Inject(method = "registerGoals",at = @At("RETURN"))
     private void addModGoals(CallbackInfo ci) {
         this.targetSelector.addGoal(1, new PhantomNeutralAttackGoal((Phantom) (Object)this));
-        this.targetSelector.addGoal(1, new PhantomHurtByTargetGoal((Phantom) (Object)this));
+        this.targetSelector.addGoal(1, new PhantomHurtByTargetGoal((Phantom) (Object)this).setAlertOthers());
     }
 
     @Inject(method = "tick",at = @At("RETURN"))
